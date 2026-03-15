@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="mt-12 bg-red-600 text-amber-50">
+    <footer className="site-footer">
       <div className="max-w-7xl mx-auto flex flex-col gap-10 px-6 py-10 md:flex-row md:justify-between">
         <div className="flex-1 space-y-2">
           <h3 className="text-lg font-semibold mb-2">Contact Us</h3>
@@ -10,7 +10,7 @@ export default function Footer() {
             Email:{" "}
             <a
               href="mailto:rcaruet@gmail.com"
-              className="underline underline-offset-4 hover:text-white"
+              className="underline underline-offset-4 hover:text-amber-100"
             >
               rcaruet@gmail.com
             </a>
@@ -21,7 +21,7 @@ export default function Footer() {
               href="https://www.facebook.com/profile.php?id=100069227313850"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-white"
+              className="underline underline-offset-4 hover:text-amber-100"
             >
               Rajshahi City Association
             </a>
@@ -32,7 +32,7 @@ export default function Footer() {
               href="https://www.facebook.com/groups/183436285027318"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-white"
+              className="underline underline-offset-4 hover:text-amber-100"
             >
               Rajshahi City Association
             </a>

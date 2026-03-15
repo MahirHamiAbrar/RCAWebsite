@@ -4,10 +4,10 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { ChevronRight } from "lucide-react";
 
 export default function Home() {
@@ -15,10 +15,10 @@ export default function Home() {
     <main className="site-shell">
       <Navbar />
 
-      <section className="pt-40 pb-20 px-6 md:px-16 lg:px-32">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-x-20">
-          <div className="lg:w-1/2 text-center lg:text-left space-y-4">
-            <h2 className="animate-fadeSlide text-5xl font-bold uppercase text-black">
+      <section className="px-6 pb-20 pt-40">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-10 lg:flex-row lg:gap-16">
+          <div className="w-full max-w-2xl space-y-4 text-center">
+            <h2 className="animate-fadeSlide text-5xl font-bold uppercase text-black dark:text-white">
               WELCOME TO
             </h2>
 
@@ -26,13 +26,13 @@ export default function Home() {
               RAJSHAHI CITY ASSOCIATION RUET
             </span>
 
-            <p className="animate-fadeSlide delay-200 text-xl text-gray-700">
+            <p className="animate-fadeSlide delay-200 text-xl text-gray-700 dark:text-gray-300">
               Uniting Rajshahi City Students and Alumni of RUET to share
               knowledge, inspire growth and build a strong network.
             </p>
           </div>
 
-          <div className="lg:w-1/2 flex justify-center">
+          <div className="flex w-full max-w-sm justify-center">
             <img
               src="/image/RCA.png"
               alt="RCA Photo"
@@ -42,11 +42,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-6 pb-24 transition duration-500 hover:-translate-y-2 hover:scale-[1.01]">
+      <div className="mx-auto w-[96%] max-w-[1500px] px-2 pb-24 transition duration-500 hover:-translate-y-2 hover:scale-[1.01] md:px-4">
         <Swiper
-          className="mySwiper rounded-xl shadow-2xl"
+          className="mySwiper rounded-xl border border-white/25 shadow-2xl"
           loop={true}
           autoplay={false}
+          navigation={true}
           slidesPerView={1}
           spaceBetween={30}
           grabCursor={true}
@@ -54,11 +55,7 @@ export default function Home() {
             el: ".swiper-pagination",
             clickable: true,
           }}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          }}
-          modules={[Pagination, Navigation, Autoplay]}
+          modules={[Pagination, Autoplay, Navigation]}
         >
           <SwiperSlide className="relative">
             <div className="relative">
@@ -217,9 +214,6 @@ export default function Home() {
             </div>
           </SwiperSlide>
         </Swiper>
-
-        <div className="swiper-button-next !text-amber-50"></div>
-        <div className="swiper-button-prev !text-amber-50"></div>
         <div className="swiper-pagination"></div>
       </div>
 

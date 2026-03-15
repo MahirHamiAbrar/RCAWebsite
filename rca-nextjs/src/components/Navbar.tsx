@@ -11,8 +11,11 @@ import {
   BookOpen,
   Users,
   UserPlus,
+  Moon,
+  Sun,
   X,
 } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 interface NavbarProps {
   showQueryButton?: boolean;
@@ -21,6 +24,7 @@ interface NavbarProps {
 export default function Navbar({ showQueryButton = true }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { href: "/", icon: Home, label: "Home" },
@@ -35,7 +39,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-red-700 shadow-md backdrop-blur-md">
+    <nav className="site-nav">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-3">
           <img src="/image/RCA.png" alt="RCA Logo" className="h-16 w-auto" />
@@ -66,6 +70,16 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
               </Link>
             </li>
           )}
+          <li>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </li>
         </ul>
 
         <div
@@ -87,7 +101,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
       </div>
 
       {menuOpen && (
-        <ul className="absolute right-6 top-20 z-40 w-56 space-y-4 rounded-2xl bg-black/90 p-5 text-sm uppercase text-white md:hidden">
+        <ul className="site-mobile-menu">
           {navItems.map((item) => (
             <li
               key={item.href}
@@ -103,11 +117,21 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
               </Link>
             </li>
           ))}
+          <li>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-amber-50"
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </button>
+          </li>
           {showQueryButton && (
             <li>
               <Link
                 href="/query"
-                className="rca-pill-button flex w-full"
+                className="rca-pill-button flex w-full text-center bg-red"
                 onClick={() => setMenuOpen(false)}
               >
                 Any Query
