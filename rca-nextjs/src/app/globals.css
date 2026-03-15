@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rca-cream: #fffbeb;
+  --color-rca-amber: #fef3c7;
+  --color-rca-red: #dc2626;
+  --color-rca-red-deep: #b91c1c;
+  --color-rca-ink: #111827;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-rca-cream);
+  color: var(--color-rca-ink);
+  font-family: var(--font-poppins), sans-serif;
+}
+
+a,
+button,
+input,
+textarea {
+  transition-property: color, background-color, border-color, transform, box-shadow, opacity;
+  transition-duration: 200ms;
+}
+
+@layer components {
+  .site-shell {
+    @apply min-h-screen bg-amber-50;
+  }
+
+  .site-section-title {
+    @apply text-3xl font-bold text-red-600 md:text-4xl;
+  }
+
+  .site-section-copy {
+    @apply text-base leading-7 text-gray-700 md:text-lg;
+  }
+
+  .rca-card {
+    @apply rounded-2xl bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl;
+  }
+
+  .rca-panel {
+    @apply rounded-3xl bg-white shadow-xl;
+  }
+
+  .rca-pill-button {
+    @apply inline-flex items-center justify-center rounded-full bg-red-600 px-6 py-2.5 text-sm font-bold text-amber-50 shadow-lg transition duration-300 hover:scale-105 hover:bg-red-700;
+  }
+
+  .rca-input {
+    @apply w-full rounded-xl border border-red-100 bg-white px-4 py-3 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400;
+  }
+
+  .rca-nav-link {
+    @apply flex items-center gap-1 transition duration-200 hover:scale-110;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeSlide {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-fadeSlide {
+  animation: fadeSlide 1s ease-out forwards;
+}
+
+.animate-pop {
+  animation: pop 0.6s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+/* Float animation for news cards */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Swiper custom styles */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fef3c7 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fef3c7 !important;
+}

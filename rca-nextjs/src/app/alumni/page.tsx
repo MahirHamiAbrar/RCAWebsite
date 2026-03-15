@@ -1,0 +1,143 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+interface Alumni {
+  name: string;
+  department: string;
+  series: string;
+  email: string;
+  workplace: string;
+  color: string;
+}
+
+const sheetID = "1M0wl4IRBs5v5N2iQ_XM2FzMuvsG8vj9VdWAyB5ncqL8";
+const gid = "0";
+const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?gid=${gid}`;
+
+// Anonymous color generator
+function randomColor() {
+  const colors = [
+    "#f87171",
+    "#fb923c",
+    "#facc15",
+    "#4ade80",
+    "#22d3ee",
+    "#60a5fa",
+    "#a78bfa",
+    "#f472b6",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+export default function Alumni() {
+  const [alumniData, setAlumniData] = useState<Alumni[]>([]);
+  const [filteredData, setFilteredData] = useState<Alumni[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.text())
+      .then((data) => {
+        const json = JSON.parse(data.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+
+        const alumni = rows.map((row: any) => ({
+          name: String(row.c[0]?.v ?? ""),
+          department: String(row.c[1]?.v ?? ""),
+          series: String(row.c[2]?.v ?? ""),
+          email: String(row.c[4]?.v ?? ""),
+          workplace: String(row.c[5]?.v ?? ""),
+          color: randomColor(),
+        }));
+
+        setAlumniData(alumni);
+        setFilteredData(alumni);
+      })
+      .catch((err) => console.error("Sheet load error:", err));
+  }, []);
+
+  // Filter alumni based on search query
+  useEffect(() => {
+    const q = searchQuery.toLowerCase();
+    const filtered = alumniData.filter(
+      (a) =>
+        a.name.toLowerCase().includes(q) ||
+        a.department.toLowerCase().includes(q) ||
+        a.series.toLowerCase().includes(q) ||
+        a.workplace.toLowerCase().includes(q)
+    );
+    setFilteredData(filtered);
+  }, [searchQuery, alumniData]);
+
+  return (
+    <main className="site-shell">
+      <Navbar />
+
+      <section className="pt-40 pb-6 px-6 text-center">
+        <h1 className="mb-2 text-4xl font-bold text-red-700">
+          RCA Alumni
+        </h1>
+        <p className="mb-6 text-gray-700">
+          RUET Alumni Directory
+        </p>
+
+        <div className="max-w-md mx-auto">
+          <input
+            type="text"
+            placeholder="Search by name, department, series, workplace..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="rca-input"
+          />
+        </div>
+      </section>
+
+      <section className="pb-24 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {filteredData.map((alumni, index) => (
+            <div
+              key={index}
+              className="rca-card p-6"
+            >
+              <div
+                className="w-24 h-24 mx-auto rounded-full mb-4"
+                style={{ background: alumni.color }}
+              ></div>
+
+              <h3 className="text-center text-lg font-bold text-gray-800">
+                {alumni.name}
+              </h3>
+              <p className="text-center text-sm font-semibold text-red-600">
+                {alumni.department}
+              </p>
+
+              <div className="mt-3 space-y-1 text-sm text-gray-600">
+                <p>
+                  <span className="font-semibold">Series:</span> {alumni.series}
+                </p>
+                <p className="break-all">
+                  <span className="font-semibold">Email:</span> {alumni.email}
+                </p>
+                <p>
+                  <span className="font-semibold">Working At:</span>{" "}
+                  {alumni.workplace}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredData.length === 0 && (
+          <p className="mt-8 text-center text-gray-600">
+            No alumni found matching your search.
+          </p>
+        )}
+      </section>
+
+      <Footer />
+    </main>
+  );
+}
