@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getBackendBaseUrl } from "@/lib/config";
 
 interface Alumni {
   name: string;
@@ -33,11 +35,35 @@ function randomColor() {
 }
 
 export default function Alumni() {
+  const router = useRouter();
   const [alumniData, setAlumniData] = useState<Alumni[]>([]);
   const [filteredData, setFilteredData] = useState<Alumni[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
+    async function verifyAuth() {
+      try {
+        const response = await fetch(`${getBackendBaseUrl()}/api/auth/me`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          router.replace("/login?redirect=/alumni");
+          return;
+        }
+      } catch {
+        router.replace("/login?redirect=/alumni");
+        return;
+      }
+      setIsCheckingAuth(false);
+    }
+
+    void verifyAuth();
+  }, [router]);
+
+  useEffect(() => {
+    if (isCheckingAuth) return;
+
     fetch(url)
       .then((res) => res.text())
       .then((data) => {
@@ -57,10 +83,12 @@ export default function Alumni() {
         setFilteredData(alumni);
       })
       .catch((err) => console.error("Sheet load error:", err));
-  }, []);
+  }, [isCheckingAuth]);
 
   // Filter alumni based on search query
   useEffect(() => {
+    if (isCheckingAuth) return;
+
     const q = searchQuery.toLowerCase();
     const filtered = alumniData.filter(
       (a) =>
@@ -70,7 +98,17 @@ export default function Alumni() {
         a.workplace.toLowerCase().includes(q)
     );
     setFilteredData(filtered);
-  }, [searchQuery, alumniData]);
+  }, [searchQuery, alumniData, isCheckingAuth]);
+
+  if (isCheckingAuth) {
+    return (
+      <main className="site-shell">
+        <Navbar />
+        <section className="px-6 pb-16 pt-40 text-center text-lg">Checking access...</section>
+        <Footer />
+      </main>
+    );
+  }
 
   return (
     <main className="site-shell">

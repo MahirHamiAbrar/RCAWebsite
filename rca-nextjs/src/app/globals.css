@@ -23,6 +23,10 @@
   --rca-text: #111827;
   --rca-text-muted: #4b5563;
   --rca-title: #dc2626;
+  --rca-input-bg: #fff7ed;
+  --rca-input-border: rgba(220, 38, 38, 0.25);
+  --rca-input-text: #1f2937;
+  --rca-input-placeholder: #9ca3af;
 }
 
 .dark {
@@ -38,6 +42,10 @@
   --rca-text: #e9edf2;
   --rca-text-muted: #c7cdd6;
   --rca-title: #ff4d5f;
+  --rca-input-bg: rgba(10, 14, 20, 0.78);
+  --rca-input-border: rgba(248, 113, 113, 0.28);
+  --rca-input-text: #f8fafc;
+  --rca-input-placeholder: #94a3b8;
 }
 
 html {
@@ -95,7 +103,14 @@ textarea {
   }
 
   .rca-input {
-    @apply w-full rounded-xl border border-red-100 bg-white px-4 py-3 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400;
+    @apply w-full rounded-xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-400;
+    background: var(--rca-input-bg);
+    border-color: var(--rca-input-border);
+    color: var(--rca-input-text);
+  }
+
+  .rca-input::placeholder {
+    color: var(--rca-input-placeholder);
   }
 
   .rca-nav-link {
