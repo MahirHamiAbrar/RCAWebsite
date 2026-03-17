@@ -16,6 +16,7 @@ import {
   Settings,
   Moon,
   Sun,
+  Menu,
   X,
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
@@ -73,6 +74,17 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
     void loadUser();
   }, [pathname]);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   async function handleLogout() {
     await fetch(`${getBackendBaseUrl()}/api/auth/logout`, {
       method: "POST",
@@ -86,21 +98,21 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
 
   return (
     <nav className="site-nav">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-6">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:py-4 md:px-6">
         {/* Logo on Left */}
-        <Link href="/" className="flex shrink-0 items-center space-x-3">
-          <img src="/image/RCA.png" alt="RCA Logo" className="h-16 w-auto" />
-          <div className="flex flex-col leading-tight">
-            <span className="text-amber-50 text-xl font-bold">RCA</span>
-            <span className="text-amber-50 text-sm font-semibold md:text-lg">
-              Rajshahi City Association
+        <Link href="/" className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <img src="/image/RCA.png" alt="RCA Logo" className="h-12 w-auto sm:h-16" />
+          <div className="hidden flex-col leading-tight sm:flex">
+            <span className="text-amber-50 text-lg font-bold sm:text-xl">RCA</span>
+            <span className="text-amber-50 text-xs font-semibold sm:text-sm lg:text-base">
+              RCA - RUET
             </span>
           </div>
         </Link>
 
-        {/* Navigation in Center */}
+        {/* Navigation in Center - Hidden on Mobile */}
         <div className="hidden flex-1 justify-center md:flex">
-          <ul className="flex items-center space-x-6 text-xs font-semibold uppercase text-amber-50 lg:text-sm">
+          <ul className="flex items-center gap-2 text-xs font-semibold uppercase text-amber-50 lg:gap-6 lg:text-sm">
             {visibleNavItems.map((item) => (
               <li key={item.href} className="rca-nav-link">
                 <item.icon size={16} />
@@ -116,26 +128,26 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
         </div>
 
         {/* Buttons on Right */}
-        <div className="flex items-center gap-3 md:ml-6">
+        <div className="flex items-center gap-2 sm:gap-3">
           {showQueryButton && (
-            <Link href="/query" className="rca-pill-button">
-              Any Query
+            <Link href="/query" className="hidden rca-pill-button sm:inline-flex">
+              Query
             </Link>
           )}
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20"
+            className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20 transition"
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
           {user ? (
-            <div className="relative">
+            <div className="relative hidden sm:block">
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen((prev) => !prev)}
-                className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10 font-bold text-amber-50"
+                className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center overflow-hidden rounded-full border border-white/30 bg-white/10 font-bold text-amber-50"
                 aria-label="Open profile menu"
               >
                 {user.profilePictureUrl ? (
@@ -149,7 +161,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
                 )}
               </button>
               {profileMenuOpen && (
-                <div className="absolute right-0 top-12 min-w-48 rounded-xl border border-white/20 bg-black/85 p-2 text-xs uppercase text-amber-50 shadow-lg">
+                <div className="absolute right-0 top-12 min-w-48 rounded-xl border border-white/20 bg-black/85 p-2 text-xs uppercase text-amber-50 shadow-lg z-50">
                   <Link
                     href="/profile/edit"
                     className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white/10"
@@ -167,93 +179,109 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
               )}
             </div>
           ) : (
-            <Link href="/login" className="rounded-full border border-white/30 px-4 py-2 text-xs font-bold uppercase lg:text-sm">
+            <Link href="/login" className="hidden rounded-full border border-white/30 px-3 py-2 text-xs font-bold uppercase sm:inline-block lg:text-sm">
               Login
             </Link>
           )}
         </div>
 
-        <div
-          className="ml-auto space-y-1 cursor-pointer z-20 md:hidden"
+        {/* Hamburger Menu Button - Mobile */}
+        <button
+          type="button"
           onClick={() => setMenuOpen(!menuOpen)}
+          className="ml-2 inline-flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20 transition"
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
-          {!menuOpen ? (
-            <>
-              <div className="w-6 h-0.5 bg-amber-50"></div>
-              <div className="w-6 h-0.5 bg-amber-50"></div>
-              <div className="w-6 h-0.5 bg-amber-50"></div>
-            </>
-          ) : (
-            <X size={24} className="text-amber-50" />
-          )}
-        </div>
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
-        <ul className="site-mobile-menu">
-          {visibleNavItems.map((item) => (
-            <li
-              key={item.href}
-              className="flex items-center gap-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              <item.icon size={16} />
-              <Link
-                href={item.href}
-                className={isActive(item.href) ? "underline underline-offset-4" : ""}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-amber-50"
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-              {theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </button>
-          </li>
-          {user ? (
-            <>
-              <li>
-                <Link href="/profile/edit" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-                  <Settings size={16} /> Edit Profile
-                </Link>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-amber-50"
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 top-[60px] bg-black/40 md:hidden z-30"
+            onClick={() => setMenuOpen(false)}
+          />
+          
+          {/* Menu Content */}
+          <div className="site-mobile-menu md:hidden">
+            <ul className="space-y-3">
+              {visibleNavItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10 ${
+                      isActive(item.href) ? "bg-white/20 underline" : ""
+                    }`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <item.icon size={18} />
+                    <span>{item.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="border-t border-white/20 pt-3 mt-3 space-y-3">
+              {showQueryButton && (
+                <Link
+                  href="/query"
+                  className="rca-pill-button w-full text-center text-sm flex items-center justify-center"
+                  onClick={() => setMenuOpen(false)}
                 >
-                  <LogOut size={16} /> Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link href="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-                <LogIn size={16} /> Login
-              </Link>
-            </li>
-          )}
-          {showQueryButton && (
-            <li>
-              <Link
-                href="/query"
-                className="rca-pill-button flex w-full text-center bg-red"
-                onClick={() => setMenuOpen(false)}
+                  Any Query
+                </Link>
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  toggleTheme();
+                  setMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 font-semibold text-amber-50 transition hover:bg-white/20"
               >
-                Any Query
-              </Link>
-            </li>
-          )}
-        </ul>
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                <span className="text-sm">{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+              </button>
+
+              {user ? (
+                <>
+                  <Link
+                    href="/profile/edit"
+                    className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <Settings size={18} />
+                    <span>Edit Profile</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10"
+                  >
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <LogIn size={18} />
+                  <span>Login</span>
+                </Link>
+              )}
+            </div>
+          </div>
+        </>
       )}
     </nav>
   );

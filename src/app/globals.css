@@ -71,7 +71,7 @@ textarea {
 
 @layer components {
   .site-shell {
-    @apply min-h-screen;
+    @apply min-h-screen pt-16 sm:pt-20;
   }
 
   .site-section-title {
@@ -124,11 +124,12 @@ textarea {
   }
 
   .site-mobile-menu {
-    @apply absolute right-6 top-20 z-40 w-56 space-y-4 rounded-2xl border p-5 text-sm uppercase md:hidden;
+    @apply fixed right-4 top-16 w-[calc(100%-2rem)] max-w-sm z-40 rounded-2xl border p-4 sm:p-5 space-y-3 md:hidden overflow-y-auto;
     background: var(--rca-nav-mobile);
     border-color: var(--rca-border);
     color: var(--rca-text);
     backdrop-filter: blur(16px);
+    max-height: calc(100vh - 100px);
   }
 
   .site-footer {
