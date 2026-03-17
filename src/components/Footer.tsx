@@ -1,5 +1,6 @@
 export default function Footer() {
   const year = new Date().getFullYear();
+  const contributors = "{Talha, MHAbrar}";
   return (
     <footer className="site-footer">
       <div className="max-w-7xl mx-auto flex flex-col gap-6 sm:gap-10 px-4 sm:px-6 py-8 sm:py-10 md:flex-row md:justify-between">
@@ -98,7 +99,7 @@ export default function Footer() {
       </div>
 
       <div className="pb-8 text-center text-xs sm:text-sm text-white/90">
-        Talha, MHAbrar © {year}
+        {contributors} © {year}
       </div>
     </footer>
   );
