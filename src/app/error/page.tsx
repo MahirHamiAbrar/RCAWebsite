@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 
 interface ErrorPageProps {
-  searchParams: {
+  searchParams: Promise<{
     reason?: string;
-  };
+  }>;
 }
 
-export default function ErrorPage({ searchParams }: ErrorPageProps) {
-  const reason = searchParams.reason || "unknown";
+export default async function ErrorPage({ searchParams }: ErrorPageProps) {
+  const params = await searchParams;
+  const reason = params.reason || "unknown";
 
   return (
     <html lang="en">
