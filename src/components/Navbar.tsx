@@ -138,7 +138,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20 transition"
+            className="hidden sm:inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20 transition"
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
@@ -189,7 +189,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
-          className="ml-2 inline-flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-white/30 bg-white/10 text-amber-50 backdrop-blur-lg hover:bg-white/20 transition"
+          className="ml-2 inline-flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-white/30 bg-white/5 text-amber-50 backdrop-blur-lg hover:bg-white/15 transition"
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
@@ -265,7 +265,17 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
                     }}
                     className="w-full flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10"
                   >
-                    <LogOut size={18} />
+                    <div className="inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-white/10 font-bold text-xs">
+                      {user.profilePictureUrl ? (
+                        <img
+                          src={user.profilePictureUrl}
+                          alt={user.fullName}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        avatarText
+                      )}
+                    </div>
                     <span>Logout</span>
                   </button>
                 </>
