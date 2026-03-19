@@ -113,7 +113,7 @@ export default function Membership() {
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = fallbackImage;
                   }}
-                  className="w-24 h-24 mx-auto rounded-full mb-4 object-cover bg-gray-100"
+                  className="w-24 h-24 mx-auto rounded-full mb-4 object-contain bg-gray-100"
                 />
 
                 <h3 className="text-lg font-bold text-gray-800">

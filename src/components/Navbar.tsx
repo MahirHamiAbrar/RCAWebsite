@@ -103,11 +103,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
         <Link href="/" className="flex shrink-0 items-center gap-2 sm:gap-3">
           <img src="/image/RCA.png" alt="RCA Logo" className="h-12 w-auto sm:h-16" />
           <div className="hidden flex-col leading-tight sm:flex">
-            <span className="text-amber-50 text-lg font-bold sm:text-xl">RCA</span>
-            <span className="text-amber-50 text-xs font-semibold sm:text-sm lg:text-base">
-              {/* Rajshahi City Association, RUET */}
-              RCA - RUET
-            </span>
+            {/* --- RCA - RUET --- */}
           </div>
         </Link>
 
