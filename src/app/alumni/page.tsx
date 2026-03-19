@@ -10,28 +10,62 @@ interface Alumni {
   name: string;
   department: string;
   series: string;
+  blood: string;
   email: string;
+  status: string;
   workplace: string;
-  color: string;
+  gradient: string;
 }
 
-const sheetID = "1M0wl4IRBs5v5N2iQ_XM2FzMuvsG8vj9VdWAyB5ncqL8";
+const sheetID = "1OtQTRbmN032jU0FxgjJEQq9HVqup3u39NTxTSpKo6iE";
 const gid = "0";
 const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?gid=${gid}`;
 
-// Anonymous color generator
-function randomColor() {
-  const colors = [
-    "#f87171",
-    "#fb923c",
-    "#facc15",
-    "#4ade80",
-    "#22d3ee",
-    "#60a5fa",
-    "#a78bfa",
-    "#f472b6",
+// Random gradient generator for avatars
+function randomGradient() {
+  const gradients = [
+    "linear-gradient(135deg, #f87171, #fb923c)",
+    "linear-gradient(135deg, #fb923c, #facc15)",
+    "linear-gradient(135deg, #facc15, #4ade80)",
+    "linear-gradient(135deg, #4ade80, #22d3ee)",
+    "linear-gradient(135deg, #22d3ee, #60a5fa)",
+    "linear-gradient(135deg, #60a5fa, #a78bfa)",
+    "linear-gradient(135deg, #a78bfa, #f472b6)",
+    "linear-gradient(135deg, #f472b6, #f87171)",
   ];
-  return colors[Math.floor(Math.random() * colors.length)];
+  return gradients[Math.floor(Math.random() * gradients.length)];
+}
+
+// Get initials from name with smart handling
+function getInitials(name: string): string {
+  if (!name || name.trim().length === 0) return "NA";
+
+  const trimmedName = name.trim();
+  const words = trimmedName.split(/\s+/);
+
+  // Check if first word is "MD" (with or without dots)
+  let startIndex = 0;
+  if (words.length > 1) {
+    const firstWord = words[0].toLowerCase().replace(/\./g, "");
+    if (firstWord === "md") {
+      startIndex = 1;
+    }
+  }
+
+  const wordsToProcess = words.slice(startIndex);
+
+  if (wordsToProcess.length === 0) return "NA";
+
+  // If multiple words, take first letter of each (max 3)
+  if (wordsToProcess.length > 1) {
+    return wordsToProcess
+      .slice(0, 3)
+      .map((word) => word.charAt(0).toUpperCase())
+      .join("");
+  }
+
+  // If single word, take first two letters
+  return wordsToProcess[0].substring(0, 2).toUpperCase();
 }
 
 export default function Alumni() {
@@ -74,9 +108,11 @@ export default function Alumni() {
           name: String(row.c[0]?.v ?? ""),
           department: String(row.c[1]?.v ?? ""),
           series: String(row.c[2]?.v ?? ""),
+          blood: String(row.c[3]?.v ?? ""),
           email: String(row.c[4]?.v ?? ""),
-          workplace: String(row.c[5]?.v ?? ""),
-          color: randomColor(),
+          status: String(row.c[5]?.v ?? ""),
+          workplace: String(row.c[6]?.v ?? ""),
+          gradient: randomGradient(),
         }));
 
         setAlumniData(alumni);
@@ -95,7 +131,9 @@ export default function Alumni() {
         a.name.toLowerCase().includes(q) ||
         a.department.toLowerCase().includes(q) ||
         a.series.toLowerCase().includes(q) ||
-        a.workplace.toLowerCase().includes(q)
+        a.workplace.toLowerCase().includes(q) ||
+        a.status.toLowerCase().includes(q) ||
+        a.blood.toLowerCase().includes(q)
     );
     setFilteredData(filtered);
   }, [searchQuery, alumniData, isCheckingAuth]);
@@ -141,9 +179,13 @@ export default function Alumni() {
               className="rca-card p-6"
             >
               <div
-                className="w-24 h-24 mx-auto rounded-full mb-4"
-                style={{ background: alumni.color }}
-              ></div>
+                className="w-24 h-24 mx-auto rounded-full mb-4 flex items-center justify-center"
+                style={{ backgroundImage: alumni.gradient }}
+              >
+                <span className="text-white text-3xl font-bold">
+                  {getInitials(alumni.name)}
+                </span>
+              </div>
 
               <h3 className="text-center text-lg font-bold text-gray-800">
                 {alumni.name}
@@ -155,6 +197,12 @@ export default function Alumni() {
               <div className="mt-3 space-y-1 text-sm text-gray-600">
                 <p>
                   <span className="font-semibold">Series:</span> {alumni.series}
+                </p>
+                <p>
+                  <span className="font-semibold">Blood:</span> {alumni.blood}
+                </p>
+                <p>
+                  <span className="font-semibold">Status:</span> {alumni.status}
                 </p>
                 <p className="break-all">
                   <span className="font-semibold">Email:</span> {alumni.email}

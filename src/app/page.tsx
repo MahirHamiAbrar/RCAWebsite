@@ -60,7 +60,7 @@ export default function Home() {
           <SwiperSlide className="relative">
             <div className="relative">
               <img
-                src="/image/IMG_0388.JPG"
+                src="/image/Admission2025.jpeg"
                 alt="RCA"
                 className="h-56 sm:h-80 lg:h-96 w-full object-cover"
               />
@@ -124,7 +124,7 @@ export default function Home() {
           <SwiperSlide className="relative">
             <div className="relative">
               <img
-                src="/image/Green Yellow Books Library Fundraising Raffle Ticket.jpg"
+                src="/image/RCA_Library_Grand_Interior.png"
                 alt="Library"
                 className="h-56 sm:h-80 lg:h-96 w-full object-cover"
               />

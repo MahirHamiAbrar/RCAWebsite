@@ -41,7 +41,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
     { href: "/event", icon: Calendar, label: "Events" },
     { href: "/library", icon: BookOpen, label: "Library" },
     { href: "/alumni", icon: Users, label: "Alumni" },
-    { href: "/membership", icon: UserPlus, label: "Membership" },
+    { href: "/membership", icon: UserPlus, label: "Committee Members" },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -105,6 +105,7 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
           <div className="hidden flex-col leading-tight sm:flex">
             <span className="text-amber-50 text-lg font-bold sm:text-xl">RCA</span>
             <span className="text-amber-50 text-xs font-semibold sm:text-sm lg:text-base">
+              {/* Rajshahi City Association, RUET */}
               RCA - RUET
             </span>
           </div>

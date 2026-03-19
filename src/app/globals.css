@@ -228,6 +228,20 @@ textarea {
   color: #fef3c7 !important;
 }
 
+/* Light mode pagination */
+.swiper-pagination-bullet {
+  background: rgba(220, 38, 38, 0.5) !important;
+}
+
 .swiper-pagination-bullet-active {
   background: #fef3c7 !important;
+}
+
+/* Dark mode pagination */
+.dark .swiper-pagination-bullet {
+  background: rgba(248, 250, 252, 0.4) !important;
+}
+
+.dark .swiper-pagination-bullet-active {
+  background: rgba(248, 250, 252, 0.9) !important;
 }
