@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getInitials } from "@/lib/utils";
 
 interface Member {
   name: string;
@@ -27,12 +28,7 @@ function driveToImage(link: string) {
 
 // Generate avatar from initials
 function getInitialsAvatar(name: string) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initials = getInitials(name);
   return `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
     name
   )}`;
