@@ -28,6 +28,8 @@ function mapSupabaseUserToAuthRecord(supabaseUser: any): AuthUserRecord {
     yearOfGraduation: supabaseUser.year_of_graduation,
     currentlyWorkingAt: supabaseUser.currently_working_at,
     designation: supabaseUser.designation,
+    status: supabaseUser.status || "pending",
+    role: supabaseUser.role || "user",
     passwordHash: supabaseUser.password_hash,
     createdAt: supabaseUser.created_at,
     updatedAt: supabaseUser.updated_at,

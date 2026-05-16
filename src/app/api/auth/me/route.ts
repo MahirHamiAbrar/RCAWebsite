@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionFromCookies } from "@/lib/auth/session";
-import { getUserByIdFromSupabase } from "@/lib/auth/supabase";
+import { getUserById } from "@/lib/auth/appwrite";
 import { sanitizeUser } from "@/lib/auth/user";
 
 export async function GET() {
@@ -10,7 +10,7 @@ export async function GET() {
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
-    const user = await getUserByIdFromSupabase(session.sub);
+    const user = await getUserById(session.sub);
 
     if (!user) {
       return NextResponse.json({ user: null }, { status: 401 });

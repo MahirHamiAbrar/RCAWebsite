@@ -4,7 +4,7 @@ import { setAuthCookie, signSession } from "@/lib/auth/session";
 import { sanitizeUser } from "@/lib/auth/user";
 import { LoginPayload } from "@/types/auth";
 import { normalizePhone } from "@/lib/auth/validation";
-import { getUserByEmailFromSupabase, getUserByPhoneFromSupabase } from "@/lib/auth/supabase";
+import { getUserByEmail, getUserByPhone } from "@/lib/auth/appwrite";
 
 export async function POST(request: Request) {
   try {
@@ -22,8 +22,8 @@ export async function POST(request: Request) {
     const normalized = normalizePhone(identifier);
     const email = identifier.toLowerCase();
 
-    const userByEmail = await getUserByEmailFromSupabase(email);
-    const user = userByEmail || (await getUserByPhoneFromSupabase(normalized));
+    const userByEmail = await getUserByEmail(email);
+    const user = userByEmail || (await getUserByPhone(normalized));
 
     if (!user) {
       return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
@@ -34,10 +34,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
     }
 
+    if (user.status === "pending") {
+      return NextResponse.json({ error: "Your account is awaiting approval by an admin." }, { status: 403 });
+    }
+    if (user.status === "rejected") {
+      return NextResponse.json({ error: "Your account has been rejected." }, { status: 403 });
+    }
+
     const token = await signSession({
       sub: user.id,
       name: user.fullName,
-      email: user.email,
+      email: user.email, role: user.role, status: user.status,
     });
     await setAuthCookie(token);
 

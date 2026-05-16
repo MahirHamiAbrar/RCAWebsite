@@ -107,7 +107,8 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/alumni");
+      alert("Registration successful! Your account is now pending admin approval. You can login once it is approved.");
+      router.push("/login");
     } catch {
       setErrors(["Could not submit registration form."]);
     } finally {

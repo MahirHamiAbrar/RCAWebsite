@@ -19,13 +19,13 @@ export default async function ErrorPage({ searchParams }: ErrorPageProps) {
         <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg text-center">
           <h1 className="text-4xl font-bold text-red-600 mb-4">⚠️ Error</h1>
 
-          {reason === "supabase-unavailable" && (
+          {reason === "appwrite-unavailable" && (
             <>
               <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                Supabase Connection Failed
+                Appwrite Connection Failed
               </h2>
               <p className="text-gray-600 mb-4">
-                The application could not establish a connection to Supabase. This is a critical service required for the application to function properly.
+                The application could not establish a connection to Appwrite. This is a critical service required for the application to function properly.
               </p>
               <p className="text-gray-600 mb-6">
                 Please ensure that:
@@ -33,11 +33,11 @@ export default async function ErrorPage({ searchParams }: ErrorPageProps) {
               <ul className="text-left text-gray-600 mb-6 space-y-2">
                 <li className="flex items-start">
                   <span className="mr-2">✓</span>
-                  <span>Supabase environment variables are correctly set</span>
+                  <span>Appwrite environment variables are correctly set</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">✓</span>
-                  <span>Your Supabase project is active and accessible</span>
+                  <span>Your Appwrite project is active and accessible</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">✓</span>
@@ -47,7 +47,7 @@ export default async function ErrorPage({ searchParams }: ErrorPageProps) {
             </>
           )}
 
-          {reason !== "supabase-unavailable" && (
+          {reason !== "appwrite-unavailable" && (
             <>
               <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 Something Went Wrong

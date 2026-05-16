@@ -34,6 +34,8 @@ export function createUserRecord(
       membershipType === "alumni"
         ? payload.designation?.trim() || undefined
         : undefined,
+    status: "pending",
+    role: "user",
     passwordHash,
     createdAt: now,
     updatedAt: now,

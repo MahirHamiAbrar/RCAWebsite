@@ -14,6 +14,7 @@ import {
   LogIn,
   LogOut,
   Settings,
+  ShieldAlert,
   Moon,
   Sun,
   Menu,
@@ -165,6 +166,14 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
                   >
                     <Settings size={14} /> Edit Profile
                   </Link>
+                  {(user as any).role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-white/10"
+                    >
+                      <ShieldAlert size={14} /> Admin
+                    </Link>
+                  )}
                   <button
                     type="button"
                     onClick={handleLogout}
@@ -255,6 +264,16 @@ export default function Navbar({ showQueryButton = true }: NavbarProps) {
                     <Settings size={18} />
                     <span>Edit Profile</span>
                   </Link>
+                  {(user as any).role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold text-amber-50 transition hover:bg-white/10"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <ShieldAlert size={18} />
+                      <span>Admin</span>
+                    </Link>
+                  )}
                   <button
                     type="button"
                     onClick={() => {

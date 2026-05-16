@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { getSessionFromCookies } from "@/lib/auth/session";
-import { upsertUserToSupabase, getUserByIdFromSupabase, getUserByEmailFromSupabase, getUserByPhoneFromSupabase } from "@/lib/auth/supabase";
+import { upsertUser, getUserById, getUserByEmail, getUserByPhone } from "@/lib/auth/appwrite";
 import { sanitizeUser } from "@/lib/auth/user";
 import { MembershipType, RegisterPayload, SocialLink } from "@/types/auth";
 import {
@@ -35,7 +35,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await getUserByIdFromSupabase(session.sub);
+    const user = await getUserById(session.sub);
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -90,14 +90,14 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ errors }, { status: 400 });
     }
 
-    const current = await getUserByIdFromSupabase(session.sub);
+    const current = await getUserById(session.sub);
     if (!current) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const email = payload.email.trim().toLowerCase();
-    const duplicateEmail = await getUserByEmailFromSupabase(email);
-    const duplicatePhone = await getUserByPhoneFromSupabase(normalizedPhone);
+    const duplicateEmail = await getUserByEmail(email);
+    const duplicatePhone = await getUserByPhone(normalizedPhone);
 
     if ((duplicateEmail && duplicateEmail.id !== session.sub) || (duplicatePhone && duplicatePhone.id !== session.sub)) {
       return NextResponse.json(
@@ -141,7 +141,7 @@ export async function PATCH(request: Request) {
       updatedAt: new Date().toISOString(),
     };
 
-    await upsertUserToSupabase(updated);
+    await upsertUser(updated);
 
     return NextResponse.json({ user: sanitizeUser(updated) });
   } catch (error) {

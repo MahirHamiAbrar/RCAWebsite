@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { createUserRecord, sanitizeUser } from "@/lib/auth/user";
 import { setAuthCookie, signSession } from "@/lib/auth/session";
-import { upsertUserToSupabase, getUserByEmailFromSupabase, getUserByPhoneFromSupabase } from "@/lib/auth/supabase";
+import { upsertUser, getUserByEmail, getUserByPhone } from "@/lib/auth/appwrite";
 import { RegisterPayload } from "@/types/auth";
 import { validateRegisterPayload } from "@/lib/auth/validation";
 
@@ -16,8 +16,8 @@ export async function POST(request: Request) {
     }
 
     const email = payload.email.trim().toLowerCase();
-    const emailExists = await getUserByEmailFromSupabase(email);
-    const phoneExists = await getUserByPhoneFromSupabase(validation.normalizedPhone);
+    const emailExists = await getUserByEmail(email);
+    const phoneExists = await getUserByPhone(validation.normalizedPhone);
 
     if (emailExists || phoneExists) {
       return NextResponse.json(
@@ -29,15 +29,10 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(payload.password, 12);
     const user = createUserRecord(payload, passwordHash, validation.normalizedPhone);
 
-    await upsertUserToSupabase(user);
+    await upsertUser(user);
 
-    const token = await signSession({
-      sub: user.id,
-      name: user.fullName,
-      email: user.email,
-    });
-
-    await setAuthCookie(token);
+    // We do NOT log them in automatically since they need admin approval first
+    // They will be redirected to a successful registration page where we tell them to wait
 
     return NextResponse.json({ user: sanitizeUser(user) }, { status: 201 });
   } catch (error) {

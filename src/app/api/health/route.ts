@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
-import { verifySupabaseConnection } from "@/lib/auth/supabase";
+import { verifyDatabaseConnection } from "@/lib/auth/appwrite";
 
 export async function GET() {
   try {
-    await verifySupabaseConnection();
+    await verifyDatabaseConnection();
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("❌ Supabase health check failed:", error);
+    console.error("❌ Appwrite health check failed:", error);
     return NextResponse.json(
       { 
         ok: false, 
-        error: "Supabase connection failed. Please ensure Supabase is configured correctly." 
+        error: "Appwrite connection failed. Please ensure Appwrite is configured correctly." 
       },
       { status: 503 }
     );

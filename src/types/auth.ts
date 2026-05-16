@@ -7,6 +7,9 @@ export interface SocialLink {
   url: string;
 }
 
+export type UserStatus = "pending" | "approved" | "rejected";
+export type UserRole = "user" | "admin";
+
 export interface AuthUserRecord {
   id: string;
   fullName: string;
@@ -22,6 +25,8 @@ export interface AuthUserRecord {
   yearOfGraduation?: number;
   currentlyWorkingAt?: string;
   designation?: string;
+  status: UserStatus;
+  role: UserRole;
   passwordHash: string;
   createdAt: string;
   updatedAt: string;
@@ -33,6 +38,8 @@ export interface SessionPayload extends JWTPayload {
   sub: string;
   name: string;
   email: string;
+  role: UserRole;
+  status: UserStatus;
 }
 
 export interface RegisterPayload {
