@@ -1,4 +1,4 @@
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases, DatabasesIndexType } from "node-appwrite";
 import "dotenv/config";
 
 const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!;
@@ -70,8 +70,8 @@ async function setup() {
 
     // 3. Create Indexes
     const indexes = [
-      () => db.createIndex(databaseId, collectionId, "idx_email", "unique", ["email"]),
-      () => db.createIndex(databaseId, collectionId, "idx_phone", "unique", ["phone_number"]),
+      () => db.createIndex(databaseId, collectionId, "idx_email", DatabasesIndexType.Unique, ["email"]),
+      () => db.createIndex(databaseId, collectionId, "idx_phone", DatabasesIndexType.Unique, ["phone_number"]),
     ];
 
     for (const idx of indexes) {
